@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Menyertakan karakter set UTF-8 dan viewport untuk responsivitas pada perangkat mobile -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <!-- Menyertakan Font Awesome untuk ikon yang digunakan dalam form input -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Menyertakan file CSS khusus untuk tampilan halaman login -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+
+    <!-- Menyertakan favicon untuk tab browser -->
+    <link rel="icon" href="{{ url_for('static', filename='img/icon_logo.png') }}" type="image/x-icon">
+</head>
+<body>
+    <!-- Card untuk tampilan login -->
+    <div class="login-card">
+        <!-- Latar belakang diagonal untuk desain -->
+        <div class="diagonal-bg"></div>
+
+        <!-- Konten login -->
+        <div class="login-content">
+            <!-- Logo aplikasi -->
+            <img class="logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+
+            <!-- Judul halaman login -->
+            <h2>Login</h2>
+
+            <!-- Form untuk login dengan metode POST -->
+            <form id="loginForm" method="POST">
+                <!-- Input untuk username dengan ikon user -->
+                <div class="input-group">
+                    <i class="fas fa-user"></i> <!-- Ikon untuk username -->
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+
+                <!-- Input untuk password dengan ikon lock -->
+                <div class="input-group">
+                    <i class="fas fa-lock"></i> <!-- Ikon untuk password -->
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+
+                <!-- Menampilkan pesan error jika login gagal -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="error-message" style="color: red; font-size: 0.9em; margin-top: 10px;">
+                            {% for category, message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <!-- Tombol untuk submit form login -->
+                <button type="submit" class="login-btn">
+                    LOGIN
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Menyertakan karakter set UTF-8 dan viewport untuk responsivitas -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera</title>
+
+    <!-- Menyertakan Font Awesome untuk ikon pada sidebar -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Menyertakan CSS untuk tampilan dashboard -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <!-- Menyertakan favicon untuk tab browser -->
+    <link rel="icon" href="{{ url_for('static', filename='img/icon_logo.png') }}" type="image/x-icon">
+</head>
+<body>
+    <!-- Tombol untuk men-toggle sidebar, dengan ikon burger (menu) -->
+    <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i> <!-- Ikon menu burger -->
+    </button>
+
+    <!-- Sidebar navigasi -->
+    <aside class="sidebar">
+        <div class="logo">
+            <span>PL4T X</span> <!-- Logo aplikasi -->
+        </div>
+        <ul class="nav-menu">
+            <!-- Menu-item untuk Dashboard -->
+            <li class="nav-item">
+                <a href="{{ url_for('dashboard') }}" class="nav-link">
+                    <i class="fas fa-home"></i> <!-- Ikon untuk Dashboard -->
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <!-- Menu-item untuk Camera (menu aktif) -->
+            <li class="nav-item">
+                <a href="{{ url_for('camera') }}" class="nav-link active">
+                    <i class="fa fa-video-camera"></i> <!-- Ikon untuk Camera -->
+                    <span>Camera</span>
+                </a>
+            </li>
+
+            <!-- Menu-item untuk Capture -->
+            <li class="nav-item">
+                <a href="{{ url_for('capture') }}" class="nav-link">
+                    <i class="fa fa-file"></i> <!-- Ikon untuk Capture -->
+                    <span>Capture</span>
+                </a>
+            </li>
+
+            <!-- Menu-item untuk Data -->
+            <li class="nav-item">
+                <a href="{{ url_for('data') }}" class="nav-link">
+                    <i class="fa fa-database"></i> <!-- Ikon untuk Data -->
+                    <span>Data</span>
+                </a>
+            </li>
+
+            <!-- Menu-item untuk Logout -->
+            <li class="nav-item">
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fa fa-sign-out"></i> <!-- Ikon untuk Logout -->
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Konten utama halaman -->
+    <main class="main-content">
+        <header class="header">
+            <!-- Bagian kiri header yang menampilkan nama halaman -->
+            <div class="header-left">
+                Camera
+            </div>
+
+            <!-- Bagian kanan header yang menampilkan nama pengguna yang login -->
+            <div class="header-right">
+                <span class="user-name">{{ name }}</span> <!-- Nama pengguna -->
+            </div>
+        </header>
+
+        <!-- Judul utama halaman -->
+        <h1 class="h1-content">Camera License Plate </h1>
+
+        <!-- Konten untuk menampilkan video stream dari kamera -->
+        <div class="content-camera">
+            <img src="{{ url_for('video_feed') }}" alt="Video Stream" id="live-camera">
+            <!-- Gambar yang menunjukkan stream video dari kamera -->
+        </div>
+    </main>
+
+    <!-- Skrip JavaScript untuk interaksi pada halaman -->
+    <script>
+        // Fungsi untuk men-toggle (menyembunyikan/memperlihatkan) sidebar
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+
+        // Menutup sidebar jika mengklik di luar sidebar pada layar kecil
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (!sidebar.contains(event.target) && !menuToggle.contains(event.target) && window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Menjaga halaman tetap pada URL saat tombol kembali ditekan
+        window.history.pushState(null, '', window.location.href);
+        window.onpopstate = function() {
+            window.history.pushState(null, '', window.location.href);
+        };
+    </script>
+</body>
+</html>

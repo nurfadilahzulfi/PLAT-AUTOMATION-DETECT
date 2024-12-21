@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Menyertakan karakter set UTF-8 dan viewport untuk responsivitas -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capture</title>
+
+    <!-- Menyertakan Font Awesome untuk ikon -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Menyertakan CSS dashboard yang terpisah -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <!-- Menyertakan ikon favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='img/icon_logo.png') }}" type="image/x-icon">
+</head>
+<body>
+    <!-- Tombol untuk meng-toggle sidebar -->
+    <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar dengan menu navigasi -->
+    <aside class="sidebar">
+        <div class="logo">
+            <span>PL4T X</span> <!-- Logo aplikasi -->
+        </div>
+        <ul class="nav-menu">
+            <!-- Menu Item untuk Navigasi -->
+            <li class="nav-item">
+                <a href="{{ url_for('dashboard') }}" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('camera') }}" class="nav-link">
+                    <i class="fa fa-video-camera"></i>
+                    <span>Camera</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('capture') }}" class="nav-link active"> <!-- Halaman Capture yang sedang aktif -->
+                    <i class="fa fa-file"></i>
+                    <span>Capture</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('data') }}" class="nav-link">
+                    <i class="fa fa-database"></i>
+                    <span>Data</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fa fa-sign-out"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Konten utama halaman -->
+    <main class="main-content">
+        <header class="header">
+            <!-- Bagian Header -->
+            <div class="header-left">
+                Capture
+            </div>
+            <div class="header-right">
+                <!-- Nama pengguna yang sedang login -->
+                <span class="user-name">{{ name }}</span>
+            </div>
+        </header>
+
+        <!-- Konten untuk bagian Capture -->
+        <div class="content">
+            <h1 class="h1-content">Capture License Plate</h1>
+            
+            <!-- Tab menu untuk memilih antara Images dan Processed Images -->
+            <div class="tab-menu">
+                <button class="tab-btn active" onclick="showGallery('raw-images', this)">Images</button>
+                <button class="tab-btn" onclick="showGallery('processed-images', this)">Processed Images</button>
+            </div>
+            
+            <div class="image-gallery">
+                <!-- Galeri untuk gambar mentah -->
+                <div class="gallery-segment raw-images" style="display: block;">
+                    <h2 style="margin-bottom: 10px; text-align: center;">Images</h2>
+                    <div class="gallery-grid">
+                        {% if images %}
+                            {% for image in images %}
+                                <div class="image-card">
+                                    <img src="{{ image }}" alt="Image"> <!-- Menampilkan gambar mentah -->
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-message">
+                                <p>No images available</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Galeri untuk gambar yang sudah diproses -->
+                <div class="gallery-segment processed-images" style="display: none;">
+                    <h2 style="margin-bottom: 10px; text-align: center;">Processed Images</h2>
+                    <div class="gallery-grid">
+                        {% if processed_images %}
+                            {% for processed_image in processed_images %}
+                                <div class="image-card">
+                                    <img src="{{ processed_image }}" alt="Processed Image"> <!-- Menampilkan gambar yang telah diproses -->
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-message">
+                                <p>No processed images available</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>                
+            </div>                       
+        </div>
+    </main>
+
+    <!-- Skrip JavaScript untuk interaksi -->
+    <script>
+        // Fungsi untuk men-toggle (menyembunyikan/memperlihatkan) sidebar
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+
+        // Menutup sidebar jika mengklik di luar sidebar pada layar kecil
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (!sidebar.contains(event.target) && !menuToggle.contains(event.target) && window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Menjaga halaman tetap pada URL saat tombol kembali ditekan
+        window.history.pushState(null, '', window.location.href);
+        window.onpopstate = function() {
+            window.history.pushState(null, '', window.location.href);
+        };
+
+        // Fungsi untuk menampilkan galeri berdasarkan pilihan tab
+        function showGallery(segment, button) {
+            // Menyembunyikan semua segmen galeri
+            document.querySelectorAll('.gallery-segment').forEach((el) => {
+                el.style.display = 'none';
+            });
+    
+            // Menampilkan segmen galeri yang dipilih
+            document.querySelector(`.${segment}`).style.display = 'block';
+    
+            // Memperbarui status tombol aktif
+            document.querySelectorAll('.tab-btn').forEach((btn) => {
+                btn.classList.remove('active');
+            });
+            button.classList.add('active');
+        }
+
+    </script>
+</body>
+</html>

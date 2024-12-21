@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <!-- Menyertakan karakter set UTF-8 dan viewport untuk responsivitas pada perangkat mobile -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <!-- Menyertakan Font Awesome untuk ikon yang digunakan di sidebar -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Menyertakan file CSS khusus untuk tampilan dashboard -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <!-- Menyertakan favicon untuk tab browser -->
+    <link rel="icon" href="{{ url_for('static', filename='img/icon_logo.png') }}" type="image/x-icon">
+</head>
+<body>
+    <!-- Tombol untuk men-toggle (membuka/menutup) sidebar pada perangkat mobile -->
+    <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i> <!-- Ikon menu burger untuk tampilan mobile -->
+    </button>
+
+    <!-- Sidebar Navigasi -->
+    <aside class="sidebar">
+        <div class="logo">
+            <span>PL4T X</span> <!-- Nama atau logo aplikasi -->
+        </div>
+        <ul class="nav-menu">
+            <!-- Menu item untuk Dashboard (yang aktif saat ini) -->
+            <li class="nav-item">
+                <a href="{{ url_for('dashboard') }}" class="nav-link active">
+                    <i class="fas fa-home"></i> <!-- Ikon untuk Dashboard -->
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <!-- Menu item untuk Camera -->
+            <li class="nav-item">
+                <a href="{{ url_for('camera') }}" class="nav-link">
+                    <i class="fa fa-video-camera"></i> <!-- Ikon untuk Camera -->
+                    <span>Camera</span>
+                </a>
+            </li>
+
+            <!-- Menu item untuk Capture -->
+            <li class="nav-item">
+                <a href="{{ url_for('capture') }}" class="nav-link">
+                    <i class="fa fa-file"></i> <!-- Ikon untuk Capture -->
+                    <span>Capture</span>
+                </a>
+            </li>
+
+            <!-- Menu item untuk Data -->
+            <li class="nav-item">
+                <a href="{{ url_for('data') }}" class="nav-link">
+                    <i class="fa fa-database"></i> <!-- Ikon untuk Data -->
+                    <span>Data</span>
+                </a>
+            </li>
+
+            <!-- Menu item untuk Logout -->
+            <li class="nav-item">
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fa fa-sign-out"></i> <!-- Ikon untuk Logout -->
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Konten utama halaman -->
+    <main class="main-content">
+        <!-- Header bagian atas dengan nama halaman dan nama pengguna -->
+        <header class="header">
+            <div class="header-left">
+                Dashboard <!-- Judul halaman di kiri -->
+            </div>
+            <div class="header-right">
+                <span class="user-name">{{ name }}</span> <!-- Menampilkan nama pengguna -->
+            </div>
+        </header>
+
+        <!-- Konten Dashboard -->
+        <div class="content">
+            <!-- Judul besar halaman -->
+            <h1 class="h1-content">Selamat datang di PL4T X</h1>
+                <div class="card-icon">
+                    <img src="{{ url_for('static', filename='img/icon_logo.png') }}" alt="Logo" class="icon-image">
+                </div>
+                <!--ini untuk bagian kata kata nya-->
+                <div class="dashboard-info">
+                    <div class="info-box">
+                        <div class="info-text">
+                            <div class="info-description">
+                                Plat nomor kendaraan adalah identitas resmi setiap kendaraan bermotor. Setiap plat memiliki keunikan yang membantu dalam identifikasi dan pendataan kendaraan di wilayah tertentu. Jadi disini kami dari Kelompok 3 menciptakan aplikasi PL4T X.
+                                <br><br>
+                                PL4T X adalah sebuah inovasi yang dirancang untuk mendeteksi dan mengenali plat nomor kendaraan secara otomatis menggunakan teknologi terkini. Aplikasi ini menggunakan algoritma pengenalan gambar yang canggih untuk memberikan hasil yang akurat dan cepat. 
+                                <ul class="card-list">
+                                    <li>Keamanan lalu lintas</li>
+                                    <li>Pendataan kendaraan</li>
+                                    <li>Manajemen parkir</li>
+                                    <li>Penegakan hukum</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>                
+        </div>
+    </main>
+    <footer class="dashboard-footer">
+        <p>&copy; 2024 PL4T X - License Plate Recognition System by Kelompok 3</p>
+    </footer>
+
+    <!-- Skrip JavaScript untuk interaksi pada halaman -->
+    <script>
+        // Fungsi untuk men-toggle (membuka atau menutup) sidebar pada perangkat mobile
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+
+        // Menutup sidebar jika pengguna mengklik di luar sidebar pada layar kecil (mobile)
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (!sidebar.contains(event.target) && !menuToggle.contains(event.target) && window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Menghindari navigasi keluar dari halaman dengan menekan tombol kembali (browser history)
+        window.history.pushState(null, '', window.location.href);
+        window.onpopstate = function() {
+            window.history.pushState(null, '', window.location.href);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f5f6fa;
+    padding: 20px; /* Add padding to prevent content from touching edges on small screens */
+}
+
+.login-card {
+    position: relative;
+    width: 350px;
+    padding: 2rem;
+    background: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 100%; /* Ensures the card doesn't exceed the screen width */
+    text-align: center; /* Centers content including the logo */
+}
+
+.diagonal-bg {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(135deg, #4A90E2, #50E3C2);
+    transform: rotate(45deg);
+    z-index: -1;
+}
+
+.logo {
+    max-width: 60%; /* adjust as needed */
+    height: auto;
+    margin: 0 auto 20px;
+    display: block;
+    object-fit: contain;
+}
+
+.login-content {
+    position: relative;
+    z-index: 1;
+}
+
+h2 {
+    text-align: center;
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.input-group i {
+    color: #888;
+    font-size: 1.2em;
+    margin-right: 10px;
+}
+
+input[type="text"],
+input[type="password"] {
+    border: none;
+    outline: none;
+    font-size: 1em;
+    flex: 1;
+    padding: 10px;
+    color: #333;
+}
+
+input::placeholder {
+    color: #aaa;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #670a92;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    margin-top: 1rem;
+}
+
+.login-btn:hover {
+    background-color: #e3a8ff;
+}
+
+.error-message p {
+    margin: 5px 0;
+    padding: 10px;
+    background-color: #e3a8ff;
+    color: #670a92;
+    border-radius: 5px;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 1rem;
+    }
+
+    h2 {
+        font-size: 1.4em;
+    }
+
+    .input-group i {
+        font-size: 0.9em;
+    }
+
+    .login-btn {
+        padding: 8px;
+        font-size: 0.85em;
+    }
+
+    .error-message p {
+        font-size: 0.85em;
+    }
+
+}

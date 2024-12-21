@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Menyertakan karakter set UTF-8 dan viewport untuk responsivitas pada perangkat mobile -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data</title>
+
+    <!-- Menyertakan Font Awesome untuk ikon yang digunakan di sidebar -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Menyertakan file CSS khusus untuk tampilan dashboard -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <!-- Menyertakan favicon untuk tab browser -->
+    <link rel="icon" href="{{ url_for('static', filename='img/icon_logo.png') }}" type="image/x-icon">
+</head>
+<body>
+    <!-- Tombol untuk men-toggle (membuka/menutup) sidebar pada perangkat mobile -->
+    <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i> <!-- Ikon menu burger untuk tampilan mobile -->
+    </button>
+
+    <!-- Sidebar Navigasi -->
+    <aside class="sidebar">
+        <div class="logo">
+            <span>PL4T X</span> <!-- Nama atau logo aplikasi -->
+        </div>
+        <ul class="nav-menu">
+            <!-- Menu item untuk Dashboard -->
+            <li class="nav-item">
+                <a href="{{ url_for('dashboard') }}" class="nav-link">
+                    <i class="fas fa-home"></i> <!-- Ikon untuk Dashboard -->
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <!-- Menu item untuk Camera -->
+            <li class="nav-item">
+                <a href="{{ url_for('camera') }}" class="nav-link">
+                    <i class="fa fa-video-camera"></i> <!-- Ikon untuk Camera -->
+                    <span>Camera</span>
+                </a>
+            </li>
+
+            <!-- Menu item untuk Capture -->
+            <li class="nav-item">
+                <a href="{{ url_for('capture') }}" class="nav-link">
+                    <i class="fa fa-file"></i> <!-- Ikon untuk Capture -->
+                    <span>Capture</span>
+                </a>
+            </li>
+
+            <!-- Menu item untuk Data (yang aktif saat ini) -->
+            <li class="nav-item">
+                <a href="{{ url_for('data') }}" class="nav-link active">
+                    <i class="fa fa-database"></i> <!-- Ikon untuk Data -->
+                    <span>Data</span>
+                </a>
+            </li>
+
+            <!-- Menu item untuk Logout -->
+            <li class="nav-item">
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fa fa-sign-out"></i> <!-- Ikon untuk Logout -->
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Konten utama halaman -->
+    <main class="main-content">
+        <!-- Header bagian atas dengan nama halaman dan nama pengguna -->
+        <header class="header">
+            <div class="header-left">
+                Data <!-- Judul halaman -->
+            </div>
+            <div class="header-right">
+                <span class="user-name">{{ name }}</span> <!-- Menampilkan nama pengguna -->
+            </div>
+        </header>
+
+        <!-- Konten Data -->
+        <div class="content">
+            <!-- Judul besar halaman -->
+            <h1 class="h1-content">Data License Plate</h1>            
+
+            <!-- Menampilkan tabel data jika ada data -->
+            {% if plates %}
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>License Plate</th>
+                            <th>Detected Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for plate in plates %}
+                        <tr>
+                            <td>{{ plate.id }}</td> <!-- Menampilkan ID -->
+                            <td>{{ plate.plate_text }}</td> <!-- Menampilkan nomor plat -->
+                            <td>{{ plate.detected_at }}</td> <!-- Menampilkan waktu terdeteksi -->
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <!-- Menampilkan pesan jika tidak ada data -->
+            <p class="empty-message">No data available.</p>
+            {% endif %}
+        </div>            
+    </main>
+
+    <!-- Skrip JavaScript untuk interaksi pada halaman -->
+    <script>
+        // Fungsi untuk men-toggle (membuka atau menutup) sidebar pada perangkat mobile
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+
+        // Menutup sidebar jika pengguna mengklik di luar sidebar pada layar kecil (mobile)
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (!sidebar.contains(event.target) && !menuToggle.contains(event.target) && window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Menghindari navigasi keluar dari halaman dengan menekan tombol kembali (browser history)
+        window.history.pushState(null, '', window.location.href);
+        window.onpopstate = function() {
+            window.history.pushState(null, '', window.location.href);
+        };
+    </script>
+</body>
+</html>
